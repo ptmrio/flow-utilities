@@ -44,7 +44,8 @@
  * - .flow-h-{n}-cols: Creates a grid with n columns (2-12).
  * - .flow-h-even-cols: Creates a grid with evenly distributed columns.
  * - .flow-h-{breakpoint}-{n}-cols: Responsive column classes.
- * - .gap-{n}: Sets gap size (0-5) when not using Bootstrap.
+ * - .gap-{n}: Sets gap size (0-12) when not using Bootstrap.
+* - .gap-{breakpoint}-{n}: Responsive gap classes.
  *
  * Examples:
  * 1. Horizontal layout:

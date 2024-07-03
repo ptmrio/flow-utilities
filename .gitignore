@@ -1,4 +1,6 @@
+.ddev/
 .git/
 node_modules/
 *.log
 .DS_Store
+publish.sh
