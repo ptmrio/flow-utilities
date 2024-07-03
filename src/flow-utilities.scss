@@ -1,0 +1,162 @@
+/**
+ * Flow Utilities
+ *
+ * @author ptmr.io Petermeir Web Solutions
+ * @license MIT License
+ *
+ * Copyright (c) 2024 ptmr.io Petermeir Web Solutions
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * This file provides a set of utility classes for creating flexible grid layouts.
+ * It's designed to work both as a standalone solution and alongside Bootstrap.
+ *
+ * How to use:
+ * 1. Standalone usage:
+ *    - Simply import this file into your main SCSS file.
+ *    - Use classes like .flow, .flow-h, .flow-h-2-cols, etc. in your HTML.
+ *    - Gap utilities (.gap-*) are available when not using Bootstrap.
+ *
+ * 2. With Bootstrap:
+ *    - Import Bootstrap before this file.
+ *    - This utility will automatically detect Bootstrap and adjust accordingly.
+ *    - Your custom flow classes will be available alongside Bootstrap's grid system.
+ *
+ * Key Classes:
+ * - .flow: Creates a vertical grid layout.
+ * - .flow-h: Creates a horizontal grid layout.
+ * - .flow-h-{n}-cols: Creates a grid with n columns (2-12).
+ * - .flow-h-even-cols: Creates a grid with evenly distributed columns.
+ * - .flow-h-{breakpoint}-{n}-cols: Responsive column classes.
+ * - .gap-{n}: Sets gap size (0-5) when not using Bootstrap.
+ *
+ * Examples:
+ * 1. Horizontal layout:
+ * <div class="flow-h flow-h-3-cols flow-h-md-4-cols gap-3">
+ *   <div>Column 1</div>
+ *   <div>Column 2</div>
+ *   <div>Column 3</div>
+ * </div>
+ *
+ * 2. Vertical layout:
+ * <div class="flow gap-3">
+ *   <div>Section 1</div>
+ *   <div>Section 2</div>
+ *   <div>Section 3</div>
+ * </div>
+ *
+ * The vertical layout (.flow) is particularly useful for creating evenly spaced
+ * vertical sections. It's an excellent alternative to adding margin-top and
+ * margin-bottom to individual elements. By using .flow with a gap utility,
+ * you ensure consistent spacing between elements without the need to manage
+ * margins on each item. This approach reduces CSS complexity and helps maintain
+ * a clean, consistent layout even when adding or removing elements.
+ *
+ * Note: When used with Bootstrap, this utility uses Bootstrap's breakpoints and spacing.
+ * When used standalone, it defines its own breakpoints and spacing scale.
+ */
+
+@function using-bootstrap() {
+    @return function-exists(bootstrap-utilities);
+}
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+) !default;
+
+// Root styles
+:root {
+    --flow-spacer: var(--spacer, 1rem);
+}
+
+// Custom flow utilities
+@if not using-bootstrap() {
+    $spacers: (
+        0: 0,
+        1: calc(var(--flow-spacer) * 0.25),
+        2: calc(var(--flow-spacer) * 0.5),
+        3: var(--flow-spacer),
+        4: calc(var(--flow-spacer) * 1.5),
+        5: calc(var(--flow-spacer) * 3),
+        6: calc(var(--flow-spacer) * 4),
+        7: calc(var(--flow-spacer) * 5),
+        8: calc(var(--flow-spacer) * 7),
+        9: calc(var(--flow-spacer) * 9),
+        10: calc(var(--flow-spacer) * 11)
+    ) !default;
+
+    @each $key, $value in $spacers {
+        .gap-#{$key} {
+            gap: $value;
+        }
+    }
+
+    @each $breakpoint, $breakpoint-value in $grid-breakpoints {
+        @media (min-width: $breakpoint-value) {
+            @each $key, $value in $spacers {
+                .gap-#{$breakpoint}-#{$key} {
+                    gap: $value;
+                }
+            }
+        }
+    }
+}
+
+.flow {
+    display: grid;
+    grid-auto-rows: max-content;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+// default horizontal
+.flow-h {
+    --flow-cols: 1;
+    --flow-min-col-width: 200px;
+    display: grid;
+    grid-template-columns: repeat(var(--flow-cols), minmax(var(--flow-min-col-width), 1fr));
+}
+
+.flow-h-even-cols {
+    --flow-cols: auto-fit;
+}
+
+@for $i from 2 through 12 {
+    .flow-h-#{$i}-cols {
+        --flow-cols: #{$i};
+    }
+}
+
+// Using our defined breakpoints
+@each $breakpoint, $breakpoint-value in $grid-breakpoints {
+    @media (min-width: $breakpoint-value) {
+        .flow-h-#{$breakpoint}-even-cols {
+            --flow-cols: auto-fit;
+        }
+        @for $i from 2 through 12 {
+            .flow-h-#{$breakpoint}-#{$i}-cols {
+                --flow-cols: #{$i};
+            }
+        }
+    }
+}

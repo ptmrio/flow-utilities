@@ -1,0 +1,28 @@
+{
+  "name": "@ptmrio/flow-utilities",
+  "version": "1.0.0",
+  "description": "SCSS utility classes for flexible grid layouts",
+  "main": "src/flow-utilities.scss",
+  "style": "src/flow-utilities.min.css",
+  "files": [
+    "scss"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "prepublishOnly": "yarn run build"
+  },
+  "keywords": [
+    "scss",
+    "css",
+    "grid",
+    "layout",
+    "utilities"
+  ],
+  "author": "ptmr.io - Petermeir Web Solutions",
+  "license": "MIT",
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "fs-extra": "^11.2.0",
+    "sass": "^1.77.6"
+  }
+}
