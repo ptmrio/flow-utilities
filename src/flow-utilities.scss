@@ -103,7 +103,9 @@ $grid-breakpoints: (
         7: calc(var(--flow-spacer) * 5),
         8: calc(var(--flow-spacer) * 7),
         9: calc(var(--flow-spacer) * 9),
-        10: calc(var(--flow-spacer) * 11)
+        10: calc(var(--flow-spacer) * 11),
+        11: calc(var(--flow-spacer) * 13),
+        12: calc(var(--flow-spacer) * 15)
     ) !default;
 
     @each $key, $value in $spacers {

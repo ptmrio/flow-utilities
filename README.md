@@ -66,7 +66,7 @@ Breakpoints: `sm`, `md`, `lg`, `xl`, `xxl`
 
 ### Gap Classes
 
-- `.gap-{n}`: Sets gap size (0-5)
+- `.gap-{n}`: Sets gap size (0-12), based on --spacer custom property
 
 ## Examples
 
