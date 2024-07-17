@@ -4,19 +4,32 @@ const CleanCSS = require('clean-css');
 const path = require('path');
 
 const srcDir = path.join(__dirname, '..', 'src');
-const mainFile = path.join(srcDir, 'flow-utilities.scss');
+const files = [
+  'flow-utilities.scss',
+  'flow-utilities-bootstrap.scss',
+  'flow-utilities-tailwindcss.scss'
+];
 
-// Compile SCSS to CSS
-const result = sass.renderSync({
-  file: mainFile,
-  outputStyle: 'expanded'
+files.forEach(file => {
+  const inputFile = path.join(srcDir, file);
+  const outputName = path.parse(file).name;
+
+  // Compile SCSS to CSS
+  const result = sass.renderSync({
+    file: inputFile,
+    outputStyle: 'expanded'
+  });
+
+  // Write unminified CSS
+  const unminifiedOutput = path.join(srcDir, `${outputName}.css`);
+  fs.writeFileSync(unminifiedOutput, result.css);
+  console.log(`Unminified CSS written to ${unminifiedOutput}`);
+
+  // Minify and write CSS
+  const minified = new CleanCSS().minify(result.css);
+  const minifiedOutput = path.join(srcDir, `${outputName}.min.css`);
+  fs.writeFileSync(minifiedOutput, minified.styles);
+  console.log(`Minified CSS written to ${minifiedOutput}`);
 });
-
-// Write unminified CSS
-fs.writeFileSync(path.join(srcDir, 'flow-utilities.css'), result.css);
-
-// Minify and write CSS
-const minified = new CleanCSS().minify(result.css);
-fs.writeFileSync(path.join(srcDir, 'flow-utilities.min.css'), minified.styles);
 
 console.log('Build completed successfully!');
