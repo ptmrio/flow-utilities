@@ -45,14 +45,14 @@
 @tailwind utilities;
 @layer components {
   .flow {
-    @apply grid;
+    display: grid;
     grid-auto-rows: max-content;
     grid-template-columns: minmax(0, 1fr);
   }
   .flow-h {
     --flow-cols: 1;
     --flow-min-col-width: 200px;
-    @apply grid;
+    display: grid;
     grid-template-columns: repeat(var(--flow-cols), minmax(var(--flow-min-col-width), 1fr));
   }
   .flow-h-even-cols {
